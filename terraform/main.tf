@@ -33,7 +33,7 @@ resource "aws_default_route_table" "myapp_rtb" {
     }
 }
 
-resource "aws_default_security_group" "default-sg" {
+resource "aws_default_security_group" "test-sg" {
   vpc_id = aws_vpc.myapp_vpc.id
 
   ingress {
