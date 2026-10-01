@@ -5,7 +5,7 @@ variable "vpc_cidr_block" {
 
 variable "subnet_cidr_block" {
   type    = string
-  default = "0.0.10.0/24"
+  default = "10.0.10.0/24"
 }
 
 variable "env_prefix" {
