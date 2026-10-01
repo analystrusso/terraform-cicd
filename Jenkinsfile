@@ -13,7 +13,7 @@ pipeline {
     maven 'maven-3.9'
   }
   environment {
-    IMAGE_NAME = 'nanatwn/demo-app:java-maven-2.0'
+    IMAGE_NAME = 'analystrusso/twn-bootcamp-repo:java-maven-2.0'
   }
   stages {
     stage("build app") {
