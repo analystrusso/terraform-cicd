@@ -3,3 +3,4 @@ target
 terraform.tfvars
 variables.tf
 terraform/.terraform/
+java-maven-app/terraform/.terraform.lock.hcl
