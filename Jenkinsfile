@@ -74,6 +74,22 @@ pipeline {
           }
         }
       }
-    }               
+    }          
+    stage("teardown") {
+      environment {
+        AWS_ACCESS_KEY = credentials('jenkins_aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
+        TF_VAR_env_prefix = 'test'
+      }
+      steps {
+        script {
+          echo "destroying provisioned infrastructure"
+          sleep(time: 10, unit: "MINUTES")
+          dir('terraform') {
+            sh "terraform destroy --auto-approve" 
+          }
+        }
+      }
+    }     
   }
 }
