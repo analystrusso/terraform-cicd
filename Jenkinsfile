@@ -78,6 +78,8 @@ pipeline {
 
           echo 'deploying docker image to EC2...'
           sshagent(['myapp-keypair']) {
+            ssh-add -l
+            ssh -vvv -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} true
             // Fix 4: single-quoted so the *shell* expands variables, not Groovy.
             // The password goes over ssh stdin and never appears in argv/ps.
             // accept-new records the host key on first contact and refuses a
