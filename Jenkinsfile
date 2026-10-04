@@ -77,7 +77,7 @@ pipeline {
           sleep(time: 90, unit: "SECONDS")
 
           echo 'deploying docker image to EC2...'
-          sshagent(['server-ssh-key']) {
+          sshagent(['myapp-keypair']) {
             // Fix 4: single-quoted so the *shell* expands variables, not Groovy.
             // The password goes over ssh stdin and never appears in argv/ps.
             // accept-new records the host key on first contact and refuses a
