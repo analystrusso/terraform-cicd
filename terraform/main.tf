@@ -33,7 +33,7 @@ resource "aws_default_route_table" "myapp_rtb" {
     }
 }
 
-resource "aws_default_security_group" "default-sg" {
+resource "aws_default_security_group" "myapp-sg" {
   vpc_id = aws_vpc.myapp_vpc.id
 
   ingress {
@@ -85,7 +85,7 @@ resource "aws_instance" "myapp_server" {
   instance_type = var.instance_type
 
   subnet_id = aws_subnet.myapp-subnet-1.id
-  vpc_security_group_ids = [aws_default_security_group.default-sg.id]
+  vpc_security_group_ids = [aws_default_security_group.myapp-sg.id]
   availability_zone = var.avail_zone
 
   associate_public_ip_address = true

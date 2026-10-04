@@ -1,4 +1,9 @@
 terraform {
+  required_version = ">=0.12"
+  backend "s3" {
+    bucket = "myapp-terraform-cicd-bucket"
+    key = "myapp/state.tfstate"
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
