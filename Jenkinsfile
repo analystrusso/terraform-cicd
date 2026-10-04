@@ -75,9 +75,6 @@ pipeline {
         script {
           echo "waiting for EC2 server to initialize"
           sleep(time: 90, unit: "SECONDS")
-
-          echo 'deploying docker image to EC2...'
-          sshagent(['myapp-keypair']) {
             ssh-add -l
             ssh -vvv -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} true
             // Fix 4: single-quoted so the *shell* expands variables, not Groovy.
@@ -85,6 +82,8 @@ pipeline {
             // accept-new records the host key on first contact and refuses a
             // changed key; it does not protect the very first connection.
             sh '''
+              echo 'deploying docker image to EC2...'
+              sshagent(['myapp-keypair']) {
               scp -o StrictHostKeyChecking=no server-cmds.sh docker-compose.yaml \
                 "ec2-user@${EC2_PUBLIC_IP}:/home/ec2-user/"
               printf '%s' "$DOCKER_CREDS_PSW" | ssh -o StrictHostKeyChecking=accept-new \
