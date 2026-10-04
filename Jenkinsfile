@@ -36,11 +36,15 @@ pipeline {
     }
     stage("provision server") {
       environment {
-        AWS_ACCESS_KEY = credentials('jenkins_aws_access_key_id')
-        AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
         TF_VAR_env_prefix = 'test'
       }
       steps {
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: 'aws-access-creds',
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretkeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]])
         script {
           dir('terraform') {
             sh "terraform init"
@@ -77,11 +81,15 @@ pipeline {
     }          
     stage("teardown") {
       environment {
-        AWS_ACCESS_KEY = credentials('jenkins_aws_access_key_id')
-        AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
         TF_VAR_env_prefix = 'test'
       }
       steps {
+        withCredentials([[
+          $class: 'AmazonWebServicesCredentialsBinding',
+          credentialsId: 'aws-access-creds',
+          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+          secretkeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]])
         script {
           echo "destroying provisioned infrastructure"
           sleep(time: 10, unit: "MINUTES")
