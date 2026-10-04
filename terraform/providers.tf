@@ -1,7 +1,7 @@
 terraform {
   required_version = ">=0.12"
   backend "s3" {
-    bucket = "myapp-tf-s3-bucket"
+    bucket = "myapp-terraform-cicd-bucket"
     key = "myapp/state.tfstate"
   }
   required_providers {
