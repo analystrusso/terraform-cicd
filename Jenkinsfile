@@ -83,7 +83,7 @@ pipeline {
             // accept-new records the host key on first contact and refuses a
             // changed key; it does not protect the very first connection.
             sh '''
-              scp -o StrictHostKeyChecking=accept-new server-cmds.sh docker-compose.yaml \
+              scp -o StrictHostKeyChecking=no server-cmds.sh docker-compose.yaml \
                 "ubuntu@${EC2_PUBLIC_IP}:/home/ubuntu/"
               printf '%s' "$DOCKER_CREDS_PSW" | ssh -o StrictHostKeyChecking=accept-new \
                 "ubuntu@${EC2_PUBLIC_IP}" \
