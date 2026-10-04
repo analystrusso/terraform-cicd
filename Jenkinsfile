@@ -84,9 +84,9 @@ pipeline {
             // changed key; it does not protect the very first connection.
             sh '''
               scp -o StrictHostKeyChecking=accept-new server-cmds.sh docker-compose.yaml \
-                "ec2-user@${EC2_PUBLIC_IP}:/home/ec2-user/"
+                "ubuntu@${EC2_PUBLIC_IP}:/home/ubuntu/"
               printf '%s' "$DOCKER_CREDS_PSW" | ssh -o StrictHostKeyChecking=accept-new \
-                "ec2-user@${EC2_PUBLIC_IP}" \
+                "ubuntu@${EC2_PUBLIC_IP}" \
                 "bash ./server-cmds.sh '$IMAGE_NAME' '$DOCKER_CREDS_USR'"
             '''
           }

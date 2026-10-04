@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo yum update -y && sudo yum install -y docker
 sudo systemctl start docker
-sudo usermod -aG docker ec2-user
+sudo usermod -aG docker ubuntu
 
 # install docker compose
 sudo curl -SL "https://github.com/docker/compose/releases/download/v5.5.0/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
