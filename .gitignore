@@ -1,9 +1,10 @@
 .idea/*
 target
-terraform.tfvars
-terraform/.terraform/
-terraform/.terraform.lock.hcl
-terraform/.terraform.tfstate
-terraform/.terraform.tfstate.*
-java-maven-app/terraform/terraform.tfstate
-java-maven-app/terraform/terraform.tfstate.*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
