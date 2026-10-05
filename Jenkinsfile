@@ -83,8 +83,6 @@ pipeline {
             // accept-new records the host key on first contact and refuses a
             // changed key; it does not protect the very first connection.
             sh '''
-              ssh-add -l
-              ssh -vvv -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} true
               scp -o StrictHostKeyChecking=no server-cmds.sh docker-compose.yaml \
                 "ec2-user@${EC2_PUBLIC_IP}:/home/ec2-user/"
               printf '%s' "$DOCKER_CREDS_PSW" | ssh -o StrictHostKeyChecking=accept-new \
@@ -99,7 +97,7 @@ pipeline {
     stage("keep alive") {
       steps {
         echo "infrastructure stays up for 10 minutes, then post/always destroys it"
-        sleep(time: 10, unit: "MINUTES")
+        sleep(time: 2, unit: "MINUTES")
       }
     }
   }
