@@ -2,8 +2,7 @@
 target
 terraform.tfvars
 terraform/.terraform/
-terraform/.terraform.lock.hcl
-terraform/.terraform.tfstate
-terraform/.terraform.tfstate.*
+terraform/terraform.lock.hcl
+terraform/terraform.tfstate
+java-maven-app/terraform/.terraform/terraform.tfstate
 java-maven-app/terraform/terraform.tfstate
-java-maven-app/terraform/terraform.tfstate.*
