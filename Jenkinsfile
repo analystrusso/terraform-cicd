@@ -111,7 +111,7 @@ pipeline {
       script {
         if (env.TF_PROVISIONED == 'true') {
           echo "destroying provisioned infrastructure"
-          withCredentials(awsCreds) {
+          withCredentials(awsCreds + [string(credentialsId: 'ssh-public-key', variable: 'TF_VAR_ssh_public_key')]) {
             dir('terraform') {
               sh 'terraform init -input=false'
               sh 'terraform destroy -input=false --auto-approve'
