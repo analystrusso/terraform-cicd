@@ -33,14 +33,14 @@ resource "aws_default_route_table" "myapp_rtb" {
     }
 }
 
-resource "aws_default_security_group" "default-sg" {
+resource "aws_default_security_group" "myapp-sg" {
   vpc_id = aws_vpc.myapp_vpc.id
 
   ingress {
     from_port = 22
     to_port = 22
     protocol = "TCP"
-    cidr_blocks = [var.my_ip]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -68,7 +68,7 @@ data "aws_ami" "latest-amazon-linux-image" {
     owners = ["amazon"]
     filter {
       name = "name"
-      values = ["amzn2-ami-kernel-*-x86_64-gp2"]
+      values = ["al2023-ami-2023.12.20260930.0-kernel-*-x86_64"]
     }
     filter {
       name = "virtualization-type"
@@ -80,16 +80,21 @@ output "ec2_public_ip" {
   value = aws_instance.myapp_server.public_ip
 }
 
+resource "aws_key_pair" "myapp" {
+  key_name   = "myapp-keypair"
+  public_key = var.ssh_public_key
+}
+
 resource "aws_instance" "myapp_server" {
   ami = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.instance_type
 
   subnet_id = aws_subnet.myapp-subnet-1.id
-  vpc_security_group_ids = [aws_default_security_group.default-sg.id]
+  vpc_security_group_ids = [aws_default_security_group.myapp-sg.id]
   availability_zone = var.avail_zone
 
   associate_public_ip_address = true
-  key_name = "myapp-keypair"
+  key_name = aws_key_pair.myapp.key_name
 
   user_data = file("entry-script.sh")
 
