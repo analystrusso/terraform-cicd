@@ -97,7 +97,7 @@ pipeline {
     stage("keep alive") {
       steps {
         echo "infrastructure stays up for 10 minutes, then post/always destroys it"
-        sleep(time: 10, unit: "MINUTES")
+        sleep(time: 2, unit: "MINUTES")
       }
     }
   }
