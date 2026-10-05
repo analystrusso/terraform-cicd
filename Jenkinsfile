@@ -50,7 +50,7 @@ pipeline {
     stage("provision server") {
       steps {
         // Fix 2: the work now lives INSIDE the withCredentials body.
-        withCredentials(awsCreds) {
+        withCredentials(awsCreds + [string(credentialsId: 'ssh-public-key', variable: 'TF_VAR_ssh_public_key')]) {
           script {
             // Set before apply so a partially failed apply still gets destroyed.
             env.TF_PROVISIONED = 'true'
@@ -77,13 +77,15 @@ pipeline {
           sleep(time: 90, unit: "SECONDS")
 
           echo 'deploying docker image to EC2...'
-          sshagent(['server-ssh-key']) {
+          sshagent(['myapp-keypair']) {
             // Fix 4: single-quoted so the *shell* expands variables, not Groovy.
             // The password goes over ssh stdin and never appears in argv/ps.
             // accept-new records the host key on first contact and refuses a
             // changed key; it does not protect the very first connection.
             sh '''
-              scp -o StrictHostKeyChecking=accept-new server-cmds.sh docker-compose.yaml \
+              ssh-add -l
+              ssh -vvv -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} true
+              scp -o StrictHostKeyChecking=no server-cmds.sh docker-compose.yaml \
                 "ec2-user@${EC2_PUBLIC_IP}:/home/ec2-user/"
               printf '%s' "$DOCKER_CREDS_PSW" | ssh -o StrictHostKeyChecking=accept-new \
                 "ec2-user@${EC2_PUBLIC_IP}" \
@@ -109,7 +111,7 @@ pipeline {
       script {
         if (env.TF_PROVISIONED == 'true') {
           echo "destroying provisioned infrastructure"
-          withCredentials(awsCreds) {
+          withCredentials(awsCreds + [string(credentialsId: 'ssh-public-key', variable: 'TF_VAR_ssh_public_key')]) {
             dir('terraform') {
               sh 'terraform init -input=false'
               sh 'terraform destroy -input=false --auto-approve'

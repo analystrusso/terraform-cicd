@@ -3,6 +3,7 @@ terraform {
   backend "s3" {
     bucket = "myapp-terraform-cicd-bucket"
     key = "myapp/state.tfstate"
+    region = "us-east-1"
   }
   required_providers {
     aws = {
