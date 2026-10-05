@@ -50,7 +50,7 @@ pipeline {
     stage("provision server") {
       steps {
         // Fix 2: the work now lives INSIDE the withCredentials body.
-        withCredentials(awsCreds) {
+        withCredentials(awsCreds + [string(credentialsId: 'ssh-public-key', variable: 'TF_VAR_ssh_public_key')]) {
           script {
             // Set before apply so a partially failed apply still gets destroyed.
             env.TF_PROVISIONED = 'true'
